@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>spectral_analysis module &#8212; team35-astro-spectral-analysis 0.0.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script src="_static/documentation_options.js?v=47de8214"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-spectral_analysis">
+<span id="spectral-analysis-module"></span><h1>spectral_analysis module<a class="headerlink" href="#module-spectral_analysis" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spectral_analysis.</span></span><span class="sig-name descname"><span class="pre">SpecObj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#SpecObj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spectral_analysis.SpecObj" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class representing a Spectral Object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>raw_data</strong> – DataFrame containing raw spectral data.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.sds">
+<span class="sig-name descname"><span class="pre">sds</span></span><a class="headerlink" href="#spectral_analysis.SpecObj.sds" title="Link to this definition">¶</a></dt>
+<dd><p>SDSSDataFetcher instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.pr">
+<span class="sig-name descname"><span class="pre">pr</span></span><a class="headerlink" href="#spectral_analysis.SpecObj.pr" title="Link to this definition">¶</a></dt>
+<dd><p>preprocessing instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.raw_data">
+<span class="sig-name descname"><span class="pre">raw_data</span></span><a class="headerlink" href="#spectral_analysis.SpecObj.raw_data" title="Link to this definition">¶</a></dt>
+<dd><p>Raw spectral data DataFrame.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.identifier">
+<span class="sig-name descname"><span class="pre">identifier</span></span><a class="headerlink" href="#spectral_analysis.SpecObj.identifier" title="Link to this definition">¶</a></dt>
+<dd><p>DataFrame containing identifier information.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.coordinates">
+<span class="sig-name descname"><span class="pre">coordinates</span></span><a class="headerlink" href="#spectral_analysis.SpecObj.coordinates" title="Link to this definition">¶</a></dt>
+<dd><p>DataFrame containing coordinates (ra, dec).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.spectra_data">
+<span class="sig-name descname"><span class="pre">spectra_data</span></span><a class="headerlink" href="#spectral_analysis.SpecObj.spectra_data" title="Link to this definition">¶</a></dt>
+<dd><p>Spectra data from SDSS.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#spectral_analysis.SpecObj.data" title="Link to this definition">¶</a></dt>
+<dd><p>Processed spectral data.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><a class="headerlink" href="#spectral_analysis.SpecObj.metadata" title="Link to this definition">¶</a></dt>
+<dd><p>Metadata including identifier, redshifts, wavelength, flux, peak, equivalent width, and classifier features.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">metadatas()</span></span></dt>
+<dd><p>Returns metadata as a DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">spectra()</span></span></dt>
+<dd><p>Fetches spectra data from SDSS.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">wavelength()</span></span></dt>
+<dd><p>Returns the wavelength data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">flux()</span></span></dt>
+<dd><p>Returns the flux data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">peak()</span></span></dt>
+<dd><p>Returns the peak wavelength and flux.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">equivalent_width()</span></span></dt>
+<dd><p>Returns the equivalent width data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">interpolate_flux(target_wavelengths)</span></span></dt>
+<dd><p>Interpolates flux at target wavelengths.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">align_spectra(target_wavelengths)</span></span></dt>
+<dd><p>Aligns spectra to target wavelengths.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">redshifts()</span></span></dt>
+<dd><p>Calculates and returns redshifts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">classifier_features()</span></span></dt>
+<dd><p>Returns classifier features from raw data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.align_spectra">
+<span class="sig-name descname"><span class="pre">align_spectra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_wavelengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#SpecObj.align_spectra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spectral_analysis.SpecObj.align_spectra" title="Link to this definition">¶</a></dt>
+<dd><p>Aligns the spectra to the same set of target wavelengths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>target_wavelengths</strong> – List or array of target wavelengths.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Aligned spectra as a dictionary with wavelengths and interpolated fluxes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.classifier_features">
+<span class="sig-name descname"><span class="pre">classifier_features</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#SpecObj.classifier_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spectral_analysis.SpecObj.classifier_features" title="Link to this definition">¶</a></dt>
+<dd><p>Extracts and returns classifier features from the raw data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame containing classifier features.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.equivalent_width">
+<span class="sig-name descname"><span class="pre">equivalent_width</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#SpecObj.equivalent_width"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spectral_analysis.SpecObj.equivalent_width" title="Link to this definition">¶</a></dt>
+<dd><p>Extracts and returns the equivalent width data from the spectra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of equivalent widths, or None if data is not available.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.flux">
+<span class="sig-name descname"><span class="pre">flux</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#SpecObj.flux"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spectral_analysis.SpecObj.flux" title="Link to this definition">¶</a></dt>
+<dd><p>Extracts and returns the flux data from the spectra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of flux values, or None if data is not available.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.interpolate_flux">
+<span class="sig-name descname"><span class="pre">interpolate_flux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_wavelengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#SpecObj.interpolate_flux"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spectral_analysis.SpecObj.interpolate_flux" title="Link to this definition">¶</a></dt>
+<dd><p>Interpolates the flux values at given target wavelengths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>target_wavelengths</strong> – List or array of target wavelengths.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Interpolated flux values at the target wavelengths.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.metadatas">
+<span class="sig-name descname"><span class="pre">metadatas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#SpecObj.metadatas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spectral_analysis.SpecObj.metadatas" title="Link to this definition">¶</a></dt>
+<dd><p>Constructs and returns the metadata as a DataFrame.</p>
+<p>This method combines various spectral properties like redshifts, wavelength, flux, peak,
+equivalent width, and classifier features into a single DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame containing the combined metadata.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.peak">
+<span class="sig-name descname"><span class="pre">peak</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#SpecObj.peak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spectral_analysis.SpecObj.peak" title="Link to this definition">¶</a></dt>
+<dd><p>Determines and returns the peak wavelength and flux from the spectra.</p>
+<p>This method finds the maximum flux and its corresponding wavelength.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(peak wavelength, peak flux), or (None, None) if data is not available.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.redshifts">
+<span class="sig-name descname"><span class="pre">redshifts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#SpecObj.redshifts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spectral_analysis.SpecObj.redshifts" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates and returns the redshifts from the raw data.</p>
+<p>This method applies redshift correction to the raw data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of redshift values, or None if redshift data is not available.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.spectra">
+<span class="sig-name descname"><span class="pre">spectra</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#SpecObj.spectra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spectral_analysis.SpecObj.spectra" title="Link to this definition">¶</a></dt>
+<dd><p>Fetches and returns the spectra data from the Sloan Digital Sky Survey (SDSS).</p>
+<p>This method uses the plate, mjd, and fiberID from the identifier to fetch the spectra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The spectra data from SDSS if available, otherwise None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectral_analysis.SpecObj.wavelength">
+<span class="sig-name descname"><span class="pre">wavelength</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#SpecObj.wavelength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spectral_analysis.SpecObj.wavelength" title="Link to this definition">¶</a></dt>
+<dd><p>Extracts and returns the wavelength data from the spectra.</p>
+<p>The method converts the logarithmic wavelengths to linear scale.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of wavelengths, or None if data is not available.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spectral_analysis.spectral_analysis">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spectral_analysis.</span></span><span class="sig-name descname"><span class="pre">spectral_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#spectral_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spectral_analysis.spectral_analysis" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for performing spectral analysis based on SDSS data.</p>
+<p>This class is designed to handle multiple spectral objects and perform batch processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – Keyword arguments specifying the source and type of data to be analyzed.
+Valid keywords include ‘directory’, ‘table_name’, ‘num’, ‘constraints’, and ‘query’.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spectral_analysis.spectral_analysis.sds">
+<span class="sig-name descname"><span class="pre">sds</span></span><a class="headerlink" href="#spectral_analysis.spectral_analysis.sds" title="Link to this definition">¶</a></dt>
+<dd><p>Instance of SDSSDataFetcher for data fetching.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="fetch.html#fetch.SDSSDataFetcher" title="fetch.SDSSDataFetcher">SDSSDataFetcher</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spectral_analysis.spectral_analysis.raw_data">
+<span class="sig-name descname"><span class="pre">raw_data</span></span><a class="headerlink" href="#spectral_analysis.spectral_analysis.raw_data" title="Link to this definition">¶</a></dt>
+<dd><p>DataFrame containing raw spectral data fetched based on input criteria.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spectral_analysis.spectral_analysis.ditched_units">
+<span class="sig-name descname"><span class="pre">ditched_units</span></span><a class="headerlink" href="#spectral_analysis.spectral_analysis.ditched_units" title="Link to this definition">¶</a></dt>
+<dd><p>Processed data with units removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spectral_analysis.spectral_analysis.SpecObjs">
+<span class="sig-name descname"><span class="pre">SpecObjs</span></span><a class="headerlink" href="#spectral_analysis.spectral_analysis.SpecObjs" title="Link to this definition">¶</a></dt>
+<dd><p>List of SpecObj instances for batch processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="#spectral_analysis.SpecObj" title="spectral_analysis.SpecObj">SpecObj</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectral_analysis.spectral_analysis.multiple_processing">
+<span class="sig-name descname"><span class="pre">multiple_processing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#spectral_analysis.multiple_processing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spectral_analysis.spectral_analysis.multiple_processing" title="Link to this definition">¶</a></dt>
+<dd><p>Processes multiple spectral objects and populates the SpecObjs list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">multiple_processing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectral_analysis.html#spectral_analysis.multiple_processing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd><p>Processes multiple spectral objects based on the raw_data attribute.</p>
+<p>This method iterates over each row in the raw_data DataFrame, instantiates a SpecObj object
+for each row, and appends it to the SpecObjs list.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">team35-astro-spectral-analysis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, team35.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/spectral_analysis.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>interactive_visualization &#8212; team35-astro-spectral-analysis 0.0.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script src="../_static/documentation_options.js?v=47de8214"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for interactive_visualization</h1><div class="highlight"><pre>
+<span></span><span class="c1"># import os</span>
+<span class="c1"># os.chdir(&#39;code&#39;)</span>
+
+<span class="kn">from</span> <span class="nn">fetch</span> <span class="kn">import</span> <span class="n">SDSSDataFetcher</span>
+<span class="kn">from</span> <span class="nn">preprocess</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">spectral_analysis</span> <span class="kn">import</span> <span class="n">spectral_analysis</span><span class="p">,</span> <span class="n">SpecObj</span>
+<span class="kn">from</span> <span class="nn">classification</span> <span class="kn">import</span> <span class="n">spectral_classification</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span><span class="p">,</span> <span class="n">RocCurveDisplay</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">label_binarize</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">xgboost</span> <span class="kn">import</span> <span class="n">XGBClassifier</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># ------------------- Class Definitions -------------------</span>
+
+<span class="c1"># Dynamic Spectrum Plotter</span>
+<div class="viewcode-block" id="SpectrumPlotter">
+<a class="viewcode-back" href="../interactive_visualization.html#interactive_visualization.SpectrumPlotter">[docs]</a>
+<span class="k">class</span> <span class="nc">SpectrumPlotter</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">,</span> <span class="n">fluxes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a SpectrumPlotter object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            wavelengths (list): List of wavelengths.</span>
+<span class="sd">            fluxes (list): List of corresponding flux values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wavelengths</span> <span class="o">=</span> <span class="n">wavelengths</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fluxes</span> <span class="o">=</span> <span class="n">fluxes</span>
+    
+<div class="viewcode-block" id="SpectrumPlotter.plot_raw_spectrum">
+<a class="viewcode-back" href="../interactive_visualization.html#interactive_visualization.SpectrumPlotter.plot_raw_spectrum">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_raw_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot the raw spectral data with interactivity.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            color (str): Color of the plot line. Default is &#39;blue&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelengths</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">fluxes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No data available for plotting&quot;</span><span class="p">)</span>
+    
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="s1">&#39;Wavelength&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelengths</span><span class="p">,</span>
+            <span class="s1">&#39;Flux&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">fluxes</span>
+        <span class="p">})</span>
+
+        <span class="c1"># Creating the plot</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Wavelength&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Flux&#39;</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Spectral Data - Flux vs Wavelength&#39;</span><span class="p">,</span>
+            <span class="n">hover_data</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Wavelength&#39;</span><span class="p">,</span> <span class="s1">&#39;Flux&#39;</span><span class="p">],</span>
+            <span class="n">line_shape</span><span class="o">=</span><span class="s1">&#39;spline&#39;</span><span class="p">,</span>
+            <span class="n">render_mode</span><span class="o">=</span><span class="s1">&#39;SVG&#39;</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">))</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_title</span><span class="o">=</span><span class="s1">&#39;Wavelength&#39;</span><span class="p">,</span> 
+                          <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">&#39;Flux&#39;</span><span class="p">,</span> 
+                          <span class="n">hovermode</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span>
+                          <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                            <span class="n">rangeslider</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                            <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span>
+                          <span class="p">))</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SpectrumPlotter.plot_custom_spectrum">
+<a class="viewcode-back" href="../interactive_visualization.html#interactive_visualization.SpectrumPlotter.plot_custom_spectrum">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_custom_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;line&#39;</span><span class="p">,</span> <span class="n">line_style</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot the spectral data with custom options and interactivity.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            plot_type (str): Type of plot (&#39;line&#39; or &#39;scatter&#39;). Default is &#39;line&#39;.</span>
+<span class="sd">            line_style (str): Line style for line plot (&#39;solid&#39;, &#39;dashed&#39;, or &#39;dotted&#39;). Default is &#39;solid&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelengths</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">fluxes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No data available for plotting&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Data preparation</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Wavelength&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelengths</span><span class="p">,</span> <span class="s1">&#39;Flux&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">fluxes</span><span class="p">})</span>
+        
+        <span class="c1"># Plot type selection</span>
+        <span class="k">if</span> <span class="n">plot_type</span> <span class="o">==</span> <span class="s1">&#39;line&#39;</span><span class="p">:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Wavelength&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Flux&#39;</span><span class="p">,</span> 
+            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Spectral Data - Flux vs Wavelength&#39;</span><span class="p">,</span>
+            <span class="n">hover_data</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Wavelength&#39;</span><span class="p">,</span> <span class="s1">&#39;Flux&#39;</span><span class="p">],</span>
+            <span class="n">line_shape</span><span class="o">=</span><span class="s1">&#39;spline&#39;</span><span class="p">,</span>
+            <span class="n">render_mode</span><span class="o">=</span><span class="s1">&#39;SVG&#39;</span><span class="p">)</span>
+            <span class="c1"># Update line style</span>
+            <span class="k">if</span> <span class="n">line_style</span> <span class="o">==</span> <span class="s1">&#39;solid&#39;</span><span class="p">:</span>
+                <span class="n">fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dash</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">line_style</span> <span class="o">==</span> <span class="s1">&#39;dashed&#39;</span><span class="p">:</span>
+                <span class="n">fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dash</span><span class="o">=</span><span class="s1">&#39;dash&#39;</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">line_style</span> <span class="o">==</span> <span class="s1">&#39;dotted&#39;</span><span class="p">:</span>
+                <span class="n">fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dash</span><span class="o">=</span><span class="s1">&#39;dot&#39;</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">plot_type</span> <span class="o">==</span> <span class="s1">&#39;scatter&#39;</span><span class="p">:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Wavelength&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Flux&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Customization</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_title</span><span class="o">=</span><span class="s1">&#39;Wavelength&#39;</span><span class="p">,</span>
+                          <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">&#39;Flux&#39;</span><span class="p">,</span> 
+                          <span class="n">hovermode</span><span class="o">=</span><span class="s1">&#39;closest&#39;</span><span class="p">,</span>
+                          <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                            <span class="n">rangeslider</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                            <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span>
+                          <span class="p">))</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+</div>
+
+    
+
+<span class="c1"># Feature Visualizer</span>
+<div class="viewcode-block" id="FeatureVisualizer">
+<a class="viewcode-back" href="../interactive_visualization.html#interactive_visualization.FeatureVisualizer">[docs]</a>
+<span class="k">class</span> <span class="nc">FeatureVisualizer</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span>
+    
+<div class="viewcode-block" id="FeatureVisualizer.plot_feature_distribution">
+<a class="viewcode-back" href="../interactive_visualization.html#interactive_visualization.FeatureVisualizer.plot_feature_distribution">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_feature_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_stats</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot the distribution of a feature with interactivity.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            feature (str): Name of the feature to visualize.</span>
+<span class="sd">            bins (int): Number of bins for the histogram. Default is None.</span>
+<span class="sd">            show_stats (bool): Whether to display mean, median, and std statistics on the plot. Default is False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">feature</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Feature &#39;</span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2">&#39; not found in the DataFrame&quot;</span><span class="p">)</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">feature</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> 
+                           <span class="n">marginal</span><span class="o">=</span><span class="s2">&quot;box&quot;</span><span class="p">,</span> 
+                           <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Distribution of </span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                           <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="n">feature</span><span class="p">:</span> <span class="n">feature</span><span class="p">})</span>
+        
+        <span class="c1"># Update layout and axis ranges</span>
+        <span class="n">data_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">data_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">margin_factor</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="p">(</span><span class="n">data_max</span> <span class="o">-</span> <span class="n">data_min</span><span class="p">)</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_title</span><span class="o">=</span><span class="n">feature</span><span class="p">,</span> 
+                          <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">&#39;Frequency&#39;</span><span class="p">,</span>
+                          <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                            <span class="n">rangeslider</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                            <span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="n">data_min</span> <span class="o">-</span> <span class="n">margin_factor</span><span class="p">,</span> <span class="n">data_max</span> <span class="o">+</span> <span class="n">margin_factor</span><span class="p">],</span>
+                            <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span>
+                          <span class="p">),</span>
+                          <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>  <span class="c1"># Adjust margins</span>
+
+        <span class="k">if</span> <span class="n">show_stats</span><span class="p">:</span>
+            <span class="n">mean_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="n">median_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+            <span class="n">std_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+            
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_annotation</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mean_val</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Mean: </span><span class="si">{</span><span class="n">mean_val</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">showarrow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yref</span><span class="o">=</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_annotation</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">median_val</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Median: </span><span class="si">{</span><span class="n">median_val</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">showarrow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yref</span><span class="o">=</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_annotation</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">std_val</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;STD: </span><span class="si">{</span><span class="n">std_val</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">showarrow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yref</span><span class="o">=</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
+        
+        <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+</div>
+
+
+<span class="c1"># Machine Learning Model Insights</span>
+<span class="c1"># class ModelInsights:</span>
+<span class="c1">#     def __init__(self, spectral_classifier):</span>
+<span class="c1">#         self.classifier = spectral_classifier</span>
+
+<span class="c1">#     def plot_confusion_matrix(self):</span>
+<span class="c1">#         # Use the test data from the classifier to plot the confusion matrix</span>
+<span class="c1">#         X_test, y_test = self.classifier.X_test, self.classifier.y_test</span>
+<span class="c1">#         predictions = self.classifier.classifier_model.predict(X_test)</span>
+
+<span class="c1">#         cm = confusion_matrix(y_test, predictions)</span>
+<span class="c1">#         fig = ff.create_annotated_heatmap(cm,</span>
+<span class="c1">#                           x=self.classifier.target_names, </span>
+<span class="c1">#                           y=self.classifier.target_names)</span>
+<span class="c1">#         fig.update_layout(title=&#39;Confusion Matrix&#39;, </span>
+<span class="c1">#         xaxis_title=&#39;Predicted&#39;, yaxis_title=&#39;Actual&#39;)</span>
+<span class="c1">#         fig.show()</span>
+
+<span class="c1">#     def plot_roc_curve(self):</span>
+<span class="c1">#         # Binarize the labels for multi-class ROC</span>
+<span class="c1">#         y_bin = label_binarize(self.y_test, classes=self.classes)</span>
+<span class="c1">#         n_classes = y_bin.shape[1]</span>
+
+<span class="c1">#         # Compute ROC curve and ROC area for each class</span>
+<span class="c1">#         fpr = dict()</span>
+<span class="c1">#         tpr = dict()</span>
+<span class="c1">#         roc_auc = dict()</span>
+<span class="c1">#         fig = go.Figure()</span>
+<span class="c1">#         for i in range(n_classes):</span>
+<span class="c1">#             fpr[i], tpr[i], _ = roc_curve(y_bin[:, i], </span>
+<span class="c1">#                 self.model.predict_proba(self.X_test)[:, i])</span>
+<span class="c1">#             roc_auc[i] = auc(fpr[i], tpr[i])</span>
+
+<span class="c1">#             fig.add_trace(go.Scatter(x=fpr[i], y=tpr[i], mode=&#39;lines&#39;, </span>
+<span class="c1">#                                      name=f&#39;Class {self.classes[i]} (AUC = {roc_auc[i]:.2f})&#39;))</span>
+
+<span class="c1">#         fig.update_layout(title=&#39;Multi-class ROC Curve&#39;, </span>
+<span class="c1">#             xaxis_title=&#39;False Positive Rate&#39;, yaxis_title=&#39;True Positive Rate&#39;)</span>
+<span class="c1">#         fig.show()</span>
+
+<span class="c1"># ------------------- Example Workflow -------------------</span>
+<span class="c1"># def example_workflow():</span>
+<span class="c1">#     # Spectral Analysis</span>
+<span class="c1">#     sa = spectral_analysis(query=&quot;SELECT TOP 10 * FROM SpecObj&quot;)</span>
+    
+<span class="c1">#     # Assuming SpecObj has wavelength and flux methods</span>
+<span class="c1">#     wavelengths, fluxes = sa.SpecObjs[0].wavelength(), sa.SpecObjs[0].flux()</span>
+
+<span class="c1">#     # Visualization of Spectral Data</span>
+<span class="c1">#     spectrum_plotter = SpectrumPlotter(wavelengths, fluxes)</span>
+<span class="c1">#     spectrum_plotter.plot_raw_spectrum()</span>
+
+<span class="c1"># ------------------- Utility Functions -------------------</span>
+
+<span class="c1"># ------------------- Main Execution -------------------</span>
+
+<span class="c1"># if __name__ == &quot;__main__&quot;:</span>
+<span class="c1">#     example_workflow()</span>
+    <span class="c1"># # Test data</span>
+    <span class="c1"># wavelengths = np.linspace(400, 700, 100)  # Example wavelengths</span>
+    <span class="c1"># fluxes = np.random.rand(100)  # Example random flux values</span>
+
+    <span class="c1"># # Instantiate and use SpectrumPlotter</span>
+    <span class="c1"># spectrum_plotter = SpectrumPlotter(wavelengths, fluxes)</span>
+    <span class="c1"># spectrum_plotter.plot_raw_spectrum()</span>
+
+    <span class="c1"># # Sample data for FeatureVisualizer</span>
+    <span class="c1"># feature_data = pd.DataFrame({</span>
+    <span class="c1">#     &#39;peak_flux&#39;: np.random.rand(100) * 100,  # Example feature data</span>
+    <span class="c1">#     &#39;mean_flux&#39;: np.random.rand(100) * 50</span>
+    <span class="c1"># })</span>
+
+    <span class="c1"># # Testing FeatureVisualizer</span>
+    <span class="c1"># feature_visualizer = FeatureVisualizer(feature_data)</span>
+    <span class="c1"># feature_visualizer.plot_feature_distribution(&#39;peak_flux&#39;)</span>
+
+    <span class="c1"># # Sample data for ClassificationVisualizer</span>
+    <span class="c1"># classification_data = pd.DataFrame({</span>
+    <span class="c1">#     &#39;feature_1&#39;: np.random.rand(100),</span>
+    <span class="c1">#     &#39;feature_2&#39;: np.random.rand(100)</span>
+    <span class="c1"># })</span>
+    <span class="c1"># classification_labels = np.random.choice([&#39;Class A&#39;, &#39;Class B&#39;, &#39;Class C&#39;], size=100)</span>
+
+    <span class="c1"># # Testing ClassificationVisualizer</span>
+    <span class="c1"># classification_visualizer = ClassificationVisualizer(classification_data, classification_labels)</span>
+    <span class="c1"># classification_visualizer.plot_classification_results()</span>
+
+    <span class="c1"># from sklearn.datasets import make_classification</span>
+    <span class="c1"># from sklearn.model_selection import train_test_split</span>
+    <span class="c1"># from sklearn.ensemble import RandomForestClassifier</span>
+
+    <span class="c1"># # Sample data for ModelInsights</span>
+    <span class="c1"># X, y = make_classification(n_samples=100, n_features=4, n_informative=2, n_redundant=0, random_state=0)</span>
+    <span class="c1"># X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)</span>
+
+    <span class="c1"># # Train a sample model</span>
+    <span class="c1"># model = RandomForestClassifier()</span>
+    <span class="c1"># model.fit(X_train, y_train)</span>
+
+    <span class="c1"># # Testing ModelInsights</span>
+    <span class="c1"># model_insights = ModelInsights(model, X_test, y_test)</span>
+    <span class="c1"># model_insights.plot_confusion_matrix()</span>
+
+    <span class="c1"># # Create a multi-class dataset</span>
+    <span class="c1"># X, y = make_classification(n_samples=300, n_features=4, n_classes=3, n_informative=3, n_redundant=0, random_state=0)</span>
+    <span class="c1"># X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)</span>
+
+    <span class="c1"># # Train an XGBClassifier</span>
+    <span class="c1"># model = XGBClassifier(use_label_encoder=False, eval_metric=&#39;mlogloss&#39;)</span>
+    <span class="c1"># model.fit(X_train, y_train)</span>
+
+    <span class="c1"># # Testing ModelInsights with multi-class ROC Curve</span>
+    <span class="c1"># classes = np.unique(y)</span>
+    <span class="c1"># model_insights = ModelInsights(model, X_test, y_test, classes)</span>
+    <span class="c1"># model_insights.plot_roc_curve()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">team35-astro-spectral-analysis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, team35.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

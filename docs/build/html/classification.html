@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>classification module &#8212; team35-astro-spectral-analysis 0.0.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script src="_static/documentation_options.js?v=47de8214"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-classification">
+<span id="classification-module"></span><h1>classification module<a class="headerlink" href="#module-classification" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="classification.spectral_classification">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">classification.</span></span><span class="sig-name descname"><span class="pre">spectral_classification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">spectral_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classification.html#spectral_classification"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classification.spectral_classification" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Spectral Classification Class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*spectral_data</strong> – Variable number of spectral_analysis objects.</p></li>
+<li><p><strong>predict</strong> (<em>bool</em>) – Set to True if the class is used for prediction.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classification.spectral_classification.spectral_data">
+<span class="sig-name descname"><span class="pre">spectral_data</span></span><a class="headerlink" href="#classification.spectral_classification.spectral_data" title="Link to this definition">¶</a></dt>
+<dd><p>List of spectral_analysis objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classification.spectral_classification.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#classification.spectral_classification.data" title="Link to this definition">¶</a></dt>
+<dd><p>DataFrame containing spectral data.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classification.spectral_classification.model_score">
+<span class="sig-name descname"><span class="pre">model_score</span></span><a class="headerlink" href="#classification.spectral_classification.model_score" title="Link to this definition">¶</a></dt>
+<dd><p>Score of the classifier model.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classification.spectral_classification.classifier_model">
+<span class="sig-name descname"><span class="pre">classifier_model</span></span><a class="headerlink" href="#classification.spectral_classification.classifier_model" title="Link to this definition">¶</a></dt>
+<dd><p>Classifier model (XGBoost).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classification.spectral_classification.target_names">
+<span class="sig-name descname"><span class="pre">target_names</span></span><a class="headerlink" href="#classification.spectral_classification.target_names" title="Link to this definition">¶</a></dt>
+<dd><p>Names of the target classes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classification.spectral_classification.encoder">
+<span class="sig-name descname"><span class="pre">encoder</span></span><a class="headerlink" href="#classification.spectral_classification.encoder" title="Link to this definition">¶</a></dt>
+<dd><p>LabelEncoder for encoding target classes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="classification.spectral_classification.scaler">
+<span class="sig-name descname"><span class="pre">scaler</span></span><a class="headerlink" href="#classification.spectral_classification.scaler" title="Link to this definition">¶</a></dt>
+<dd><p>StandardScaler for data normalization.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">data_collection()</span></span></dt>
+<dd><p>Collects data from spectral_analysis objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">data_preprocessing()</span></span></dt>
+<dd><p>Preprocesses the collected data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">average_lists()</span></span></dt>
+<dd><p>Calculates the average values for wavelength and flux.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">drop_nans()</span></span></dt>
+<dd><p>Drops rows with NaN values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">normalize_data()</span></span></dt>
+<dd><p>Normalizes numeric data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">remove_outliers()</span></span></dt>
+<dd><p>Removes outliers from numeric data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">encode_target()</span></span></dt>
+<dd><p>Encodes target classes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">setup_data()</span></span></dt>
+<dd><p>Sets up X and y for model training.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">setup_model()</span></span></dt>
+<dd><p>Sets up and trains the XGBoost classifier.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">save_model()</span></span></dt>
+<dd><p>Saves the trained model to a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">load_model()</span></span></dt>
+<dd><p>Loads a trained model from a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">predict(data)</span></span></dt>
+<dd><p>Makes predictions using the trained model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.spectral_classification.average_lists">
+<span class="sig-name descname"><span class="pre">average_lists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classification.html#spectral_classification.average_lists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classification.spectral_classification.average_lists" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates and stores the average values of wavelength and flux in the data DataFrame.</p>
+<p>Replaces the list of wavelengths and fluxes with their average values for each spectral object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.spectral_classification.data_collection">
+<span class="sig-name descname"><span class="pre">data_collection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classification.html#spectral_classification.data_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classification.spectral_classification.data_collection" title="Link to this definition">¶</a></dt>
+<dd><p>Collects and aggregates data from multiple spectral_analysis objects into a single DataFrame.</p>
+<p>This method iterates through each spectral_analysis object, extracts relevant data from each SpecObj,
+and concatenates them into a unified DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.spectral_classification.data_preprocessing">
+<span class="sig-name descname"><span class="pre">data_preprocessing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classification.html#spectral_classification.data_preprocessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classification.spectral_classification.data_preprocessing" title="Link to this definition">¶</a></dt>
+<dd><p>Performs preprocessing steps on the collected data.</p>
+<p>This method sequentially calls other preprocessing methods like average_lists, drop_nans, normalize_data,
+and remove_outliers to prepare the data for classification.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.spectral_classification.drop_nans">
+<span class="sig-name descname"><span class="pre">drop_nans</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classification.html#spectral_classification.drop_nans"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classification.spectral_classification.drop_nans" title="Link to this definition">¶</a></dt>
+<dd><p>Removes rows with NaN values from the data DataFrame.</p>
+<p>This method ensures that the dataset is free of missing values which might affect model training and predictions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.spectral_classification.encode_target">
+<span class="sig-name descname"><span class="pre">encode_target</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classification.html#spectral_classification.encode_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classification.spectral_classification.encode_target" title="Link to this definition">¶</a></dt>
+<dd><p>Encodes the target class labels using LabelEncoder.</p>
+<p>This is a necessary step to convert categorical class labels into a format suitable for model training.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.spectral_classification.load_model">
+<span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./spectral_classifier.joblib'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classification.html#spectral_classification.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classification.spectral_classification.load_model" title="Link to this definition">¶</a></dt>
+<dd><p>Loads a trained classifier model from a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Path to the model file to be loaded.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.spectral_classification.normalize_data">
+<span class="sig-name descname"><span class="pre">normalize_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classification.html#spectral_classification.normalize_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classification.spectral_classification.normalize_data" title="Link to this definition">¶</a></dt>
+<dd><p>Normalizes numeric data in the data DataFrame using StandardScaler.</p>
+<p>This step is crucial for ensuring that all numerical features contribute equally to the analysis.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.spectral_classification.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classification.html#spectral_classification.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classification.spectral_classification.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Makes predictions using the trained classifier model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em><em> or </em><em>np.ndarray</em>) – Data on which predictions are to be made.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Predicted class labels.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.spectral_classification.remove_outliers">
+<span class="sig-name descname"><span class="pre">remove_outliers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classification.html#spectral_classification.remove_outliers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classification.spectral_classification.remove_outliers" title="Link to this definition">¶</a></dt>
+<dd><p>Removes outliers from the numeric data in the data DataFrame.</p>
+<p>Outliers are detected using the Interquartile Range (IQR) method and are removed to improve model performance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.spectral_classification.save_model">
+<span class="sig-name descname"><span class="pre">save_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./spectral_classifier.joblib'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/classification.html#spectral_classification.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classification.spectral_classification.save_model" title="Link to this definition">¶</a></dt>
+<dd><p>Saves the trained classifier model to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Path to save the model file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.spectral_classification.setup_data">
+<span class="sig-name descname"><span class="pre">setup_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classification.html#spectral_classification.setup_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classification.spectral_classification.setup_data" title="Link to this definition">¶</a></dt>
+<dd><p>Prepares the feature matrix (X) and target vector (y) for model training.</p>
+<p>This method separates the classification labels from the feature data and encodes the labels.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="classification.spectral_classification.setup_model">
+<span class="sig-name descname"><span class="pre">setup_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/classification.html#spectral_classification.setup_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#classification.spectral_classification.setup_model" title="Link to this definition">¶</a></dt>
+<dd><p>Sets up, configures, and trains the XGBoost classifier model.</p>
+<p>Utilizes GridSearchCV for hyperparameter tuning and cross-validation to ensure the best model performance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">team35-astro-spectral-analysis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, team35.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/classification.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

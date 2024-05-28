@@ -1,0 +1,13 @@
+astroquery
+astropy
+numpy
+pandas
+scikit-learn
+scipy
+xgboost
+joblib
+seaborn
+matplotlib
+plotly.express
+statsmodels
+

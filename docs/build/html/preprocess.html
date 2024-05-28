@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>preprocess module &#8212; team35-astro-spectral-analysis 0.0.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script src="_static/documentation_options.js?v=47de8214"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-preprocess">
+<span id="preprocess-module"></span><h1>preprocess module<a class="headerlink" href="#module-preprocess" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="preprocess.preprocessing">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">preprocess.</span></span><span class="sig-name descname"><span class="pre">preprocessing</span></span><a class="reference internal" href="_modules/preprocess.html#preprocessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.preprocessing" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="preprocess.preprocessing.apply_redshift_correction">
+<span class="sig-name descname"><span class="pre">apply_redshift_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">redshift_values</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#preprocessing.apply_redshift_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.preprocessing.apply_redshift_correction" title="Link to this definition">¶</a></dt>
+<dd><p>Apply redshift correction using a cosmological model.</p>
+<p>Args:
+- redshift_values (pandas.Series or array-like): Redshift values.
+- <a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs: Additional keyword arguments for FlatLambdaCDM.</p>
+<p>Returns:
+- astropy.units.quantity.Quantity: Co-moving distances after correction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="preprocess.preprocessing.ditch_units">
+<span class="sig-name descname"><span class="pre">ditch_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#preprocessing.ditch_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.preprocessing.ditch_units" title="Link to this definition">¶</a></dt>
+<dd><p>Remove units from columns in a pandas DataFrame.</p>
+<p>Args:
+- df (pandas.DataFrame): Input DataFrame containing columns with units.</p>
+<p>Returns:
+- pandas.DataFrame: DataFrame with units removed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="preprocess.preprocessing.impute">
+<span class="sig-name descname"><span class="pre">impute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_included</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ObjID'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#preprocessing.impute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.preprocessing.impute" title="Link to this definition">¶</a></dt>
+<dd><p>Fill missing numerical values using KNN imputation.</p>
+<p>Args:
+- df (pandas.DataFrame): Input DataFrame.
+- n_neighbors (int): Number of neighbors for KNN imputation.
+- id_included (bool): Flag to indicate if Object ID should be excluded from imputation.
+- id_name (str): Name of the Object ID column.</p>
+<p>Returns:
+- pandas.DataFrame: DataFrame with missing values imputed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="preprocess.preprocessing.normalize">
+<span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_included</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ObjID'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#preprocessing.normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.preprocessing.normalize" title="Link to this definition">¶</a></dt>
+<dd><p>Normalize numerical columns in a DataFrame.</p>
+<p>Args:
+- df (pandas.DataFrame): Input DataFrame.
+- id_included (bool): Flag to indicate if Object ID should be excluded from normalization.
+- id_name (str): Name of the Object ID column.</p>
+<p>Returns:
+- pandas.DataFrame: Normalized DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="preprocess.preprocessing.remove_outliers">
+<span class="sig-name descname"><span class="pre">remove_outliers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_included</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ObjID'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#preprocessing.remove_outliers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.preprocessing.remove_outliers" title="Link to this definition">¶</a></dt>
+<dd><p>Remove outliers using Z-score approach.</p>
+<p>Args:
+- df (pandas.DataFrame): Input DataFrame.
+- threshold (int): Z-score threshold for identifying outliers.
+- id_included (bool): Flag to indicate if Object ID should be excluded from outlier removal.
+- id_name (str): Name of the Object ID column.</p>
+<p>Returns:
+- pandas.DataFrame: DataFrame with outliers removed.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">team35-astro-spectral-analysis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, team35.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/preprocess.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
